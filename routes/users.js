@@ -8,26 +8,24 @@ import app from '../firebase.js';
 const router = express.Router();
 
 router.get('/', async function (req, res) {
+
     const db = getFirestore(app);
     console.log(db)
     
         const citiesCol = collection(db, 'PruebaCol');
         const citySnapshot = await getDocs(citiesCol);
         const cityList = citySnapshot.docs.map(doc => doc.data());
-       
-  //  var admin = require('firebase-admin');
-    //    const firebaseConfig = require('../firebaseConfig.json');
-    //
-     //   admin.initializeApp({
-       //     credential: admin.credential.cert(firebaseConfig),
-         //   databaseURL: 'https://gundies.firebaseio.com'
-     //   });
-    
-       // let db = admin.firestore();
-        
+        console.log(cityList)
+   //cityList.forEach(element => console.log(element.Nombre))
+   res.render("index", { lista: cityList });
 
-        res.send(cityList)
-})
+});
+
+       
+
+
+     //   res.send(cityList)
+
 
 
 //Funciona el POST

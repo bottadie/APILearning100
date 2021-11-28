@@ -7,6 +7,7 @@ const PORT = 1337;
 
 app.use(express.json())
 app.use(express.urlencoded({extended: true}));
+app.set('view engine', 'ejs');
 
 
 app.use('/users',usersRoutes);
