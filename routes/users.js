@@ -1,23 +1,33 @@
 import express from 'express';
 import {v4 as uuidv4} from 'uuid';
 import { collection, addDoc,getDocs } from "firebase/firestore";
+import { getFirestore } from 'firebase/firestore';
 
-import db from '../firebase.js';
+import app from '../firebase.js';
 
 const router = express.Router();
 
-router.get('/',(req,res)=>{
-   // const usersCol = collection(db, 'users');
-    //const usersDocs = getDocs(usersCol)
+router.get('/', async function (req, res) {
+    const db = getFirestore(app);
+    console.log(db)
+    
+        const citiesCol = collection(db, 'PruebaCol');
+        const citySnapshot = await getDocs(citiesCol);
+        const cityList = citySnapshot.docs.map(doc => doc.data());
+       
+  //  var admin = require('firebase-admin');
+    //    const firebaseConfig = require('../firebaseConfig.json');
+    //
+     //   admin.initializeApp({
+       //     credential: admin.credential.cert(firebaseConfig),
+         //   databaseURL: 'https://gundies.firebaseio.com'
      //   });
-   //  const usersCol = collection(db, 'users');
-     //console.log(usersCol)
-     async function quickstartListen(db) {
-        // [START firestore_setup_dataset_read]
-        const snapshot = await db.collection('users').get();
-        snapshot.forEach((doc) => {
-          console.log(doc.id, '=>', doc.data());
-        })}});
+    
+       // let db = admin.firestore();
+        
+
+        res.send(cityList)
+})
 
 
 //Funciona el POST
