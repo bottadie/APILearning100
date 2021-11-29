@@ -23,6 +23,7 @@
     "express": "^4.17.1",
     "firebase": "^9.5.0",
     "firebase-admin": "^10.0.0",
+    "tedious": "^14.0.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
