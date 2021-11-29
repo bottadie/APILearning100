@@ -21,7 +21,17 @@ router.get('/', async function (req, res) {
 
 });
 
-       
+router.get('/:id', async function (req, res) {
+  const db = getFirestore(app);
+
+  const citiesCol = collection(db, 'PruebaCol',req.params.id,"Mensajes");
+  const citySnapshot = await getDocs(citiesCol);
+  const cityList = citySnapshot.docs.map(doc => doc.data());
+  console.log(cityList)
+  res.render("index", { mensaje: cityList });
+
+ // res.send(req)
+})
 
 
      //   res.send(cityList)
