@@ -1,4 +1,5 @@
-const { Connection, Request } = require("tedious");
+//const { Connection, Request } = require("tedious");
+import {Connection, Request} from 'tedious';
 
 // Create connection to database
 const config = {
@@ -58,15 +59,13 @@ connection.on("connect", err => {
 
 connection.connect();
 
-function queryDatabase() {
+export function queryDatabase() {
   console.log("Reading rows from the Table...");
 
   // Read all rows from table
   const request = new Request(
-    `SELECT TOP 20 pc.Name as CategoryName,
-                   p.name as ProductName
-     FROM [SalesLT].[ProductCategory] pc
-     JOIN [SalesLT].[Product] p ON pc.productcategoryid = p.productcategoryid`,
+    `SELECT TOP 10 AccountID,AccountName FROM Customers`,
+    
     (err, rowCount) => {
       if (err) {
         console.error(err.message);
