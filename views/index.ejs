@@ -10,8 +10,9 @@
     <h1>Hola a EJS 
       <ul>
         <% for(var i = 0; i < lista.length; i++) {
-          %> <li><%= lista[i].Nombre %></li>
-          <button type="button" onclick="location.href= <%= lista.length %>">Ingresar al perfil</button>
+          %> <li><%= lista[i].accountname%></li>
+          <li><%= lista[i].accountid%></li>
+         
         <% } %>
   
   

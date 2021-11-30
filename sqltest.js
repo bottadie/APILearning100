@@ -1,4 +1,5 @@
 //const { Connection, Request } = require("tedious");
+import { json } from 'express';
 import {Connection, Request} from 'tedious';
 
 // Create connection to database
@@ -17,35 +18,6 @@ const config = {
   }
 };
 
-/* 
-    //Use Azure VM Managed Identity to connect to the SQL database
-    const config = {
-        server: process.env["db_server"],
-        authentication: {
-            type: 'azure-active-directory-msi-vm',
-        },
-        options: {
-            database: process.env["db_database"],
-            encrypt: true,
-            port: 1433
-        }
-    };
-
-    //Use Azure App Service Managed Identity to connect to the SQL database
-    const config = {
-        server: process.env["db_server"],
-        authentication: {
-            type: 'azure-active-directory-msi-app-service',
-        },
-        options: {
-            database: process.env["db_database"],
-            encrypt: true,
-            port: 1433
-        }
-    });
-
-*/
-
 const connection = new Connection(config);
 
 // Attempt to connect and execute queries if connection goes through
@@ -53,18 +25,18 @@ connection.on("connect", err => {
   if (err) {
     console.error(err.message);
   } else {
-    queryDatabase();
+  //  queryDatabase();
   }
 });
 
 connection.connect();
 
-export function queryDatabase() {
+export async function queryDatabase() {
   console.log("Reading rows from the Table...");
-
+  var result = []
   // Read all rows from table
-  const request = new Request(
-    `SELECT TOP 10 AccountID,AccountName FROM Customers`,
+  const  request =  new  Request(
+    `SELECT TOP 1 AccountID,AccountName FROM Customers`,
     
     (err, rowCount) => {
       if (err) {
@@ -75,11 +47,16 @@ export function queryDatabase() {
     }
   );
 
-  request.on("row", columns => {
-    columns.forEach(column => {
-      console.log("%s\t%s", column.metadata.colName, column.value);
-    });
-  });
+   request.on("row", columns => {
 
+    var obj = {};
+    columns.forEach(column => {
+      obj[column.metadata.colName.toLowerCase()] = column.value;
+    });
+
+
+  });
   connection.execSql(request);
+  return await request;
+
 }

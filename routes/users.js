@@ -8,19 +8,25 @@ import app from '../firebase.js';
 const router = express.Router();
 
 router.get('/', async function (req, res) {
+  var result = []
 
-  const valuesFromAzure = queryDatabase()
-  console.log(valuesFromAzure)
-   // const db = getFirestore(app);
-    //console.log(db)
-    
- //       const citiesCol = collection(db, 'PruebaCol');
-   //     const citySnapshot = await getDocs(citiesCol);
-     //   const cityList = citySnapshot.docs.map(doc => doc.data());
-       // console.log(cityList)
-   //cityList.forEach(element => console.log(element.Nombre))
-  // res.render("index", { lista: cityList });
-res.send(valuesFromAzure)
+  let resultado = await queryDatabase()
+
+  resultado.on("row", columns => {
+
+    var obj = {};
+    columns.forEach(column => {
+      obj[column.metadata.colName.toLowerCase()] = column.value;
+    });
+
+     result.push(obj)
+     console.log(result)
+     res.render("index", { lista: result });
+
+})   
+
+
+//res.send("hola")
 });
 
 router.get('/:id', async function (req, res) {
